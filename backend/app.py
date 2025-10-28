@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
@@ -6,13 +7,13 @@ import librosa
 import tempfile
 import os
 import traceback
-import google.generativeai as genai
+import google.genai as genai
 import gdown  # ✅ for Google Drive model download
 
 # ----------------- Flask App Setup -----------------
 app = Flask(__name__)
 CORS(app)
-
+load_dotenv()
 # ----------------- Google Drive Model Links -----------------
 AUDIO_MODEL_DRIVE_URL = "https://drive.google.com/uc?id=14GfEnrtUh32DYIIBcQekDNdUwCkliu0A"
 TEXT_MODEL_DRIVE_URL = "https://drive.google.com/uc?id=1C2oX3nDfGFc-26KSLfFKPUwja8JPdy_e"
@@ -43,7 +44,7 @@ except Exception as e:
     model_audio, model_text = None, None
 
 # ----------------- Gemini Configuration -----------------
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # ----------------- Audio Feature Extraction -----------------
 def extract_audio_features(file_path):
