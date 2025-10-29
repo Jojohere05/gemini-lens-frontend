@@ -8,7 +8,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { Loader2, Upload, FileAudio, X, Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000" || "https://backend-final-3x39.onrender.com";
 
 const AudioAnalysis = () => {
   const [file, setFile] = useState<File | null>(null);
