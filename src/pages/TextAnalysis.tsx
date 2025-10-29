@@ -7,7 +7,8 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { AlertCircle, Loader2, Trash2, ArrowRight, Sparkles, Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+// Add this line at the top after imports
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://backend-final-3x39.onrender.com";
 
 const TextAnalysis = () => {
   const [text, setText] = useState("");
@@ -131,7 +132,7 @@ const TextAnalysis = () => {
                 disabled={isLoading}
               />
               <div className="text-xs text-muted-foreground">
-                0 words
+                {text.trim().split(/\s+/).filter(word => word.length > 0).length} words
               </div>
             </div>
 
