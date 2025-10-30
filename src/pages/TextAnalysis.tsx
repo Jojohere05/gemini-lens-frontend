@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
-import PredictionResult from "@/components/prediction-result"
-import ErrorMessage from "@/components/error-message"
+import PredictionResult from "@/components/PredictionResult";
+import ErrorMessage from "@/components/ErrorMessage";
 import { AlertCircle, Loader2, Trash, ArrowRight, Sparkles } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 
