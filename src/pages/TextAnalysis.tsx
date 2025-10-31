@@ -9,7 +9,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { AlertCircle, Loader2, Trash, ArrowRight, Sparkles } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://backend-final-3x39.onrender.com"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://backend-exp-d5w4.onrender.com"
 
 export default function TextAnalysisPage() {
   const [text, setText] = useState("")
