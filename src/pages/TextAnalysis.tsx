@@ -31,64 +31,68 @@ export default function TextAnalysisPage() {
     setExplanation(null)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!text.trim()) {
-      setError("Please enter some text to analyze")
-      return
-    }
-    if (text.length < 20) {
-      setError("Please enter at least 20 characters for more accurate analysis")
-      return
-    }
-
-    setIsLoading(true)
-    setError(null)
-    setExplanation(null)
-    setResult(null)
-
-    try {
-      const response = await fetch(`${BACKEND_URL}/predict`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null)
-        throw new Error(errorData?.error || `Server error: ${response.status}`)
-      }
-
-      const data = await response.json()
-      setResult({
-        label: data.prediction,
-        confidence: data.confidence * 100,
-      })
-
-      setIsExplaining(true)
-      const explainResponse = await fetch(`${BACKEND_URL}/explain`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcript: text }),
-      })
-
-      if (explainResponse.ok) {
-        const expData = await explainResponse.json()
-        setExplanation(expData.explanation)
-      } else {
-        setExplanation("Explanation request failed. Please try again.")
-      }
-    } catch (err: any) {
-      console.error("❌ Error:", err)
-      setError(
-        err.message ||
-          "Failed to connect to the prediction API. Ensure the Flask backend is running."
-      )
-    } finally {
-      setIsExplaining(false)
-      setIsLoading(false)
-    }
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  if (!text.trim()) {
+    setError("Please enter some text to analyze")
+    return
   }
+  if (text.length < 20) {
+    setError("Please enter at least 20 characters for more accurate analysis")
+    return
+  }
+
+  setIsLoading(true)
+  setError(null)
+  setExplanation(null)
+  setResult(null)
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/predict`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      throw new Error(errorData?.error || `Server error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    setResult({
+      label: data.prediction,
+      confidence: data.confidence * 100,
+    })
+
+    setIsExplaining(true)
+    const explainResponse = await fetch(`${BACKEND_URL}/explain`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        transcript: text,
+        prediction: data.prediction  // ✅ Added prediction field
+      }),
+    })
+
+    if (explainResponse.ok) {
+      const expData = await explainResponse.json()
+      setExplanation(expData.explanation)
+    } else {
+      setExplanation("Explanation request failed. Please try again.")
+    }
+  } catch (err: any) {
+    console.error("❌ Error:", err)
+    setError(
+      err.message ||
+        "Failed to connect to the prediction API. Ensure the Flask backend is running."
+    )
+  } finally {
+    setIsExplaining(false)
+    setIsLoading(false)
+  }
+}
+
 
   const examples = [
     "I was at home all night watching TV. I didn't go anywhere near downtown.",
